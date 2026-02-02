@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 
@@ -47,103 +48,117 @@ export default function Checkout() {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gray-100 px-4 py-10">
-        <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+      <div className="min-h-screen bg-gray-100 px-4 py-8">
+        <div className="max-w-6xl mx-auto">
 
-          {cart.length === 0 ? (
-            <p className="text-gray-500">Keranjang kosong</p>
-          ) : (
-            <div className="space-y-6">
-              {cart.map(item => (
-                <div
-                  key={item.id}
-                  className="flex flex-col gap-4 border-b pb-6"
-                >
-                  {/* INFO PRODUK */}
-                  <div className="flex flex-col sm:flex-row sm:justify-between">
-                    <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-gray-600">
-                        Rp {item.price.toLocaleString("id-ID")}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Size: <span className="font-medium">{item.size}</span>
-                      </p>
-                    </div>
+          {/* BACK */}
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2
+                       text-sm text-gray-600 hover:text-black mb-6"
+          >
+            ← Kembali ke Home
+          </Link>
 
-                    {/* HAPUS */}
-                    <button
-                      onClick={() => hapusProduk(item.id)}
-                      className="text-red-500 hover:text-red-700 text-sm mt-2 sm:mt-0"
-                    >
-                      Hapus
-                    </button>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                  {/* SIZE & QTY */}
-                  <div className="flex flex-wrap items-center gap-4">
-                    {/* SIZE SELECT */}
-                    <select
-                      value={item.size}
-                      onChange={(e) => gantiSize(item.id, e.target.value)}
-                      className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-                    >
-                      {item.sizes.map(size => (
-                        <option key={size} value={size}>
-                          EU {size}
-                        </option>
-                      ))}
-                    </select>
+            {/* CART LIST */}
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
 
-                    {/* QTY */}
-                    <div className="flex items-center border rounded-lg">
+              <h2 className="text-2xl font-bold mb-6">
+                Checkout
+              </h2>
+
+              {cart.length === 0 ? (
+                <p className="text-gray-500">Keranjang kosong</p>
+              ) : (
+                <div className="space-y-6">
+                  {cart.map(item => (
+                    <div key={item.id} className="flex flex-col sm:flex-row gap-6 border-b pb-6">
+
+                      {/* INFO */}
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg">
+                          {item.name}
+                        </h3>
+
+                        <p className="text-gray-600 mt-1">
+                          Rp {item.price.toLocaleString("id-ID")}
+                        </p>
+
+                        <div className="flex items-center gap-4 mt-4">
+
+                          <select
+                            value={item.size}
+                            onChange={(e) => gantiSize(item.id, e.target.value)}
+                            className="border rounded-lg px-3 py-2 text-sm"
+                          >
+                            {item.sizes.map(size => (
+                              <option key={size} value={size}>
+                                EU {size}
+                              </option>
+                            ))}
+                          </select>
+
+                          <div className="flex items-center border rounded-lg">
+                            <button
+                              onClick={() => kurangQty(item.id)}
+                              className="px-3 py-1 text-lg hover:bg-gray-200"
+                            >
+                              −
+                            </button>
+                            <span className="px-4 text-sm">
+                              {item.qty}
+                            </span>
+                            <button
+                              onClick={() => tambahQty(item.id)}
+                              className="px-3 py-1 text-lg hover:bg-gray-200"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* ACTION */}
                       <button
-                        onClick={() => kurangQty(item.id)}
-                        className="px-3 py-1 hover:bg-gray-200"
+                        onClick={() => hapusProduk(item.id)}
+                        className="text-sm text-red-500 hover:text-red-700 self-start"
                       >
-                        −
-                      </button>
-                      <span className="px-4">{item.qty}</span>
-                      <button
-                        onClick={() => tambahQty(item.id)}
-                        className="px-3 py-1 hover:bg-gray-200"
-                      >
-                        +
+                        Hapus
                       </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-
-          {/* FORM PENGIRIMAN */}
-          <div className="mt-8">
-            <input
-              type="text"
-              placeholder="Nama Lengkap"
-              className="border w-full p-3 mb-4 rounded-lg"
-            />
-            <input
-              type="text"
-              placeholder="Alamat Pengiriman"
-              className="border w-full p-3 mb-6 rounded-lg"
-            />
-          </div>
-
-          {/* TOTAL */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div>
-              <p className="text-gray-600">Total Harga</p>
-              <p className="text-xl font-bold">
-                Rp {totalHarga.toLocaleString("id-ID")}
-              </p>
+              )}
             </div>
 
-            <button className="bg-black text-white px-8 py-3 rounded-lg hover:opacity-80">
-              Bayar Sekarang
-            </button>
+            {/* SUMMARY */}
+            <div className="bg-white rounded-xl shadow-md p-6 h-fit">
+              <h3 className="font-semibold text-lg mb-4">
+                Ringkasan Belanja
+              </h3>
+
+              <div className="flex justify-between text-sm text-gray-600 mb-2">
+                <span>Total Item</span>
+                <span>{cart.length}</span>
+              </div>
+
+              <div className="flex justify-between text-base font-semibold mb-6">
+                <span>Total Harga</span>
+                <span>
+                  Rp {totalHarga.toLocaleString("id-ID")}
+                </span>
+              </div>
+
+              <button
+                className="w-full bg-black text-white py-3 rounded-lg
+                           hover:opacity-90 transition"
+              >
+                Bayar Sekarang
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
