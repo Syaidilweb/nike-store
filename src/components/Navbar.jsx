@@ -18,14 +18,11 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
 
           {/* LOGO */}
-          <Link
-            to="/"
-            className="text-xl tracking-widest font-extrabold"
-          >
+          <Link to="/" className="text-xl tracking-widest font-extrabold">
             NIKE<span className="text-gray-400">.</span>
           </Link>
 
-          {/* DESKTOP MENU */}
+          {/* DESKTOP */}
           <div className="hidden md:flex items-center gap-10 text-sm">
             <Link to="/" className={activeClass("/")}>
               Home
@@ -54,8 +51,7 @@ export default function Navbar() {
           {/* MOBILE BUTTON */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden text-2xl focus:outline-none"
-            aria-label="Toggle Menu"
+            className="md:hidden text-2xl"
           >
             {open ? "✕" : "☰"}
           </button>
@@ -69,18 +65,14 @@ export default function Navbar() {
         }`}
       >
         <div className="bg-white px-6 py-5 flex flex-col gap-4 border-t">
-          <Link
-            to="/"
-            onClick={() => setOpen(false)}
-            className="text-gray-700 hover:text-black"
-          >
+          <Link to="/" onClick={() => setOpen(false)}>
             Home
           </Link>
 
           <Link
             to="/checkout"
             onClick={() => setOpen(false)}
-            className="flex items-center justify-between text-gray-700 hover:text-black"
+            className="flex justify-between"
           >
             Checkout
             {cartCount > 0 && (
@@ -93,7 +85,7 @@ export default function Navbar() {
           <Link
             to="/admin"
             onClick={() => setOpen(false)}
-            className="bg-black text-white text-center py-2 rounded-lg text-sm hover:opacity-80"
+            className="bg-black text-white text-center py-2 rounded-lg text-sm"
           >
             Admin
           </Link>
